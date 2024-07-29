@@ -1,3 +1,3 @@
 # Readme
 
-Answers to the Part 0 exercises are all in excersises.md
+Answers to the Part 0 exercises are all in exersises.md
