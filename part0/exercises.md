@@ -1,4 +1,6 @@
-0.4
+# Excerise 0.4
+
+Assumes page is loaded as in the example diagram
 
 ```mermaid
   sequenceDiagram
@@ -41,6 +43,6 @@
 
 ```
 
-0.5
+# Excerise 0.5
 
-0.6
+# Excerise 0.6
