@@ -53,6 +53,7 @@ const StatisticLine  = (props) => {
 }
 
 const Statistics = (props) => {
+  
   const {feedback} = props;
 
   const calculateSum = () => {
@@ -66,6 +67,7 @@ const Statistics = (props) => {
   const calculatePositive = () => {
     return (feedback.good / calculateSum()) * 100;
   }
+
   if(calculateSum() > 0) {
     return(
       <div>
