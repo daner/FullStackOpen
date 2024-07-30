@@ -15,7 +15,7 @@ function App() {
   ]
    
   const [selected, setSelected] = useState(0)
-  const [points, setPoints] = useState([0, 0, 0, 0, 0, 0, 0, 0])
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const nextAnecdote = () => {
     const newIndex = (selected + 1) % anecdotes.length
@@ -42,25 +42,27 @@ function App() {
     return index;
   }
 
+  const mostVotesIndex = calculateMostVotes(points);
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
-      <DisplayAnecdote anecdotes={anecdotes} points={points} selected={selected} />
+      <DisplayAnecdote anecdote={anecdotes[selected]} points={points[selected]} />
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
       <h1>Anecdote with the most votes</h1>
-      <DisplayAnecdote anecdotes={anecdotes} points={points} selected={calculateMostVotes(points)} />
+      <DisplayAnecdote anecdote={anecdotes[mostVotesIndex]} points={points[mostVotesIndex]} />
     </div>
   )
 }
 
 const DisplayAnecdote = (props) => {
-  const {anecdotes, points, selected} = props
+  const {anecdote, points} = props
 
   return(
     <p>
-      <span>{anecdotes[selected]} </span><br/>
-      <span>has {points[selected]} votes</span>
+      <span>{anecdote} </span><br/>
+      <span>has {points} votes</span>
     </p>
   )
 }
