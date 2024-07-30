@@ -18,7 +18,7 @@ function App() {
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const nextAnecdote = () => {
-    const newIndex = Math.floor(Math.random() * (anecdotes.length - 1));
+    const newIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(newIndex)
   }
 
