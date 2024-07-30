@@ -24,6 +24,7 @@ function App() {
         <Button handleClick={incrementGood} name="good" />
         <Button handleClick={incrementNeutral} name="neutral" />
         <Button handleClick={incrementBad} name="bad" />
+        <Header heading="statistics" />
         <Statistics feedback={feedback} />
       </div>
     </>
@@ -42,9 +43,12 @@ const Button = (props) => {
 )
 }
 
-const Display = (props) => {
+const StatisticLine  = (props) => {
   return(
-    <p>{props.name} {props.value}</p>
+    <tr>
+      <td>{props.name}</td> 
+      <td>{props.value}</td>
+    </tr>
   )
 }
 
@@ -56,21 +60,30 @@ const Statistics = (props) => {
   }
 
   const calculateAverage = () => {
-
+    return (feedback.good * 1 + feedback.bad * -1) / calculateSum();
   }
 
   const calculatePositive = () => {
-
+    return (feedback.good / calculateSum()) * 100;
   }
-
+  if(calculateSum() > 0) {
+    return(
+      <div>
+        <table>
+          <tbody>
+            <StatisticLine  name="good" value={feedback.good} />
+            <StatisticLine  name="neutral" value={feedback.neutral} />
+            <StatisticLine  name="bad" value={feedback.bad} />
+            <StatisticLine  name="all" value={calculateSum()} />
+            <StatisticLine  name="average" value={calculateAverage()} />
+            <StatisticLine  name="positive" value={calculatePositive() + "%"} />
+          </tbody>
+        </table>
+      </div>
+    )
+  }
   return(
-    <>
-      <Header heading="statistics" />
-      <Display name="good" value={feedback.good} />
-      <Display name="neutral" value={feedback.neutral} />
-      <Display name="bad" value={feedback.bad} />
-      <Display name="all" value={calculateSum()} />
-    </>
+    <div>No feedback given</div>
   )
 }
 
