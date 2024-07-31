@@ -6,7 +6,7 @@ const Filter = ({filter, callback}) => {
     
     return(
         <div>
-            <span>filter shown with </span> <input onChange={handleInputChange} />   
+            <span>filter shown with </span> <input value={filter} onChange={handleInputChange} />   
         </div>
     )
 }
