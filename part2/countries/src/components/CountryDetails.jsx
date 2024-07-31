@@ -7,7 +7,7 @@ const CountryDetails = ({country}) => {
     
     useEffect(() => {
         weatherService
-            .getForCity(country.capital[0])
+            .getForCity(country.capital[0], country.cca2)
             .then(data => {
                 setWeather(data)
             })

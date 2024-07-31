@@ -1,7 +1,7 @@
-const CountryFilter = ({filterText, filterChangedCallback}) => {
+const CountryFilter = ({filterText, filterCallback}) => {
 
     const handleInputChanged = (event) => {
-        filterChangedCallback(event.target.value)
+        filterCallback(event.target.value)
     }
 
     return(

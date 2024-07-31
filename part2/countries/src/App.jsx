@@ -25,7 +25,7 @@ function App() {
 
   return (
     <>
-      <CountryFilter filterText={filterText} filterChangedCallback={changeFilter} />
+      <CountryFilter filterText={filterText} filterCallback={changeFilter} />
       <CountryList countries={filteredCountries} filterCallback={changeFilter} />
     </>
   )

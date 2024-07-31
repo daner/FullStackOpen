@@ -1,12 +1,11 @@
 import axios from "axios";
 
-//Read key from .env.local
+//Key stored in .env.local
 const api_key = import.meta.env.VITE_WEATHER_API_KEY
 
-
-const getForCity = (city) => {
+const getForCity = (city, countryCode) => {
     return axios
-            .get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${api_key}&units=metric`)
+            .get(`https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&APPID=${api_key}&units=metric`)
             .then(response => response.data)
 
 }
