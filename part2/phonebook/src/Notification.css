@@ -1,0 +1,23 @@
+.notification-positive {
+    color: green;
+    font-size: 1.2rem;
+    background: lightgray;
+    border-style: solid;
+    border-color: green;
+    border-radius: 5px;
+    border-width: 3px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.notification-negative {
+    color: red;
+    font-size: 1.2rem;
+    background: lightgray;
+    border-style: solid;
+    border-color: red;
+    border-radius: 5px;
+    border-width: 3px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
