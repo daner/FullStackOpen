@@ -15,7 +15,11 @@ const PersonForm = ({addPerson}) => {
 
       const onSubmit = (event) => {
         event.preventDefault()
-        addPerson({name: newName, number: newNumber})
+        let result = addPerson({name: newName, number: newNumber})
+        if(result === 0) {
+            setNewName('')
+            setNewNumber('')
+        }
       }
 
     return(
@@ -31,8 +35,7 @@ const PersonForm = ({addPerson}) => {
                 </div>
             </form>
         </div>
-    )
-    
+    )   
 }
 
 export default PersonForm
