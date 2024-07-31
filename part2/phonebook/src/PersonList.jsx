@@ -1,13 +1,21 @@
-const PersonList = ({persons, filter}) => {
+const PersonList = ({persons, filter, deleteCallback}) => {
     return(
         <div>
             <h2>Numbers</h2>
-            <ul>
+            <table>
+                <tbody>
                 { persons
                     .filter( person => filter.length == 0 || person.name.toLowerCase().includes(filter.toLowerCase()))
-                    .map(person => <li key={person.id}>{person.name} {person.number}</li>)
+                    .map(person => 
+                        <tr key={person.id}>
+                            <td>{person.name}</td> 
+                            <td>{person.number}</td>
+                            <td><button onClick={() => deleteCallback(person)}>Delete</button> </td>
+                        </tr>
+                    )
                 }
-            </ul>
+                </tbody>
+            </table>
         </div>
     )
 }

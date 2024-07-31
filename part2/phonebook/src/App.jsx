@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import './App.css'
 import PersonForm from './PersonForm'
 import PersonList from './PersonList'
 import Filter from './Filter'
+import personService from './services/persons'
 
 const App = () => {
 
@@ -11,11 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log(response.data)
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
       })
   }, [])
 
@@ -24,12 +23,41 @@ const App = () => {
     const result = persons.filter((person) => person.name === newPerson.name)
 
     if (result.length > 0) {
-      alert(`${newPerson.name} is already added to phonebook`)
-      return -1
+      if(window.confirm(`${newPerson.name} is already added to phonebook. Replace old number with a new one?`)) 
+      {
+        personService
+          .update(result[0].id, newPerson)
+          .then(updatedPerson => {
+            setPersons([...persons.filter(person => person.id != updatedPerson.id), updatedPerson])   
+          })
+        return -1
+      }
+      else {
+        return -1
+      }
     }
    
-    setPersons([...persons, { name: newPerson.name, number: newPerson.number, id: persons.length + 1 }])   
+    const newObject = { name: newPerson.name, number: newPerson.number};
+
+    personService
+      .create(newObject)
+      .then(createdObject => {
+        setPersons([...persons, createdObject])   
+      })
+    
     return 0
+  }
+
+  const deletePerson = (person) => {
+    console.log(person);
+
+    if(window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .remove(person.id)
+        .then(deletedPerson => {
+          setPersons(persons.filter(person => person.id != deletedPerson.id)) 
+        })
+    }
   }
 
   const changeFilter = (newFilter) => {
@@ -41,7 +69,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <Filter filter={filter} callback={changeFilter} />
       <PersonForm addPerson={addPerson} />
-      <PersonList persons={persons} filter={filter} />
+      <PersonList persons={persons} filter={filter} deleteCallback={deletePerson} />
     </div>
   )
 }
