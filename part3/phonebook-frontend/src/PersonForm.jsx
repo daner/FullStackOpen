@@ -1,26 +1,19 @@
 import { useState } from 'react'
 
-const PersonForm = ({addPerson}) => {
-
-    const [newName, setNewName] = useState('')
-    const [newNumber, setNewNumber] = useState('')
+const PersonForm = ({addPerson, newName, setNewName, newNumber, setNewNumber}) => {
 
     const handleInputNameChange = (event) => {
         setNewName(event.target.value)
       }
     
-      const handleInputNumberChange = (event) => {
+    const handleInputNumberChange = (event) => {
         setNewNumber(event.target.value)
-      }
+    }
 
-      const onSubmit = (event) => {
+    const onSubmit = (event) => {
         event.preventDefault()
-        let result = addPerson({name: newName, number: newNumber})
-        if(result === 0) {
-            setNewName('')
-            setNewNumber('')
-        }
-      }
+        addPerson({name: newName, number: newNumber})
+    }
 
     return(
         <div>

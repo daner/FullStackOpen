@@ -24,6 +24,7 @@ app.get('/api/persons', (request, response) => {
         .then(persons => {
             response.json(persons)
         })
+        .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -54,17 +55,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
     
-    const body = request.body
+    const { number } = request.body
     const id = request.params.id
     
-    if (!body.number) {
-        return response.status(400).json({ 
-          error: 'number missing' 
-        })
-    }
-
     Person
-        .findByIdAndUpdate(id, { number: body.number} , { new: true } )
+        .findByIdAndUpdate(id, { number: number } , { new: true, runValidators: true, context: 'query' } )
         .then(person => {
             if(person) {
                 response.json(person)
@@ -76,21 +71,9 @@ app.put('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     
     const body = request.body
-
-    if (!body.number) {
-        return response.status(400).json({ 
-          error: 'number missing' 
-        })
-    }
-
-    if (!body.name) {
-        return response.status(400).json({ 
-          error: 'name missing' 
-        })
-    }
 
     Person
         .find({ name: body.name})
@@ -101,17 +84,17 @@ app.post('/api/persons', (request, response) => {
                 })    
             }
             else {
-                const id = Math.floor(Math.random() * 10000)
-
                 const person = new Person({
-                    id: String(id),
                     name: body.name,
                     number: body.number
                 })
             
-                person.save().then(addedPerson => {
-                    response.json(addedPerson)
-                })
+                person
+                    .save()
+                    .then(addedPerson => {
+                        response.json(addedPerson)
+                    })
+                    .catch(error => next(error))  
             }
         })
 })
@@ -126,6 +109,7 @@ app.get('/info', (request, response) => {
         .then(persons => {
             response.send(`<html><body><p>Phonebook has info for ${persons.length} people</p><p>${today}</p></body></html>`)
         })
+        .catch(error => next(error))
 })
 
 
@@ -141,6 +125,8 @@ const errorHandler = (error, request, response, next) => {
   
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'Malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
     }
 
     next(error)

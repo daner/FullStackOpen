@@ -8,6 +8,8 @@ import personService from './services/persons'
 
 const App = () => {
 
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([]) 
   const [filter, setFilter] = useState('');
   const [message, setMessage] = useState('')
@@ -33,11 +35,11 @@ const App = () => {
           .then(updatedPerson => {
             setNotification(`Updated ${updatedPerson.name}`, false)
             setPersons([...persons.filter(person => person.id != updatedPerson.id), updatedPerson])   
+            clearForm()
           })
-        return 0
-      }
-      else {
-        return -1
+          .catch(error => {
+            setNotification(`${error.response.data.error}`, true)
+          })
       }
     }
    
@@ -47,10 +49,12 @@ const App = () => {
       .create(newObject)
       .then(createdPerson => {
         setNotification(`Added ${createdPerson.name}.`, false)
-        setPersons([...persons, createdPerson])   
+        setPersons([...persons, createdPerson])
+        clearForm()   
       })
-    
-    return 0
+      .catch(error => {
+        setNotification(`${error.response.data.error}`, true)
+      })
   }
 
   const deletePerson = (personToDelete) => {
@@ -80,12 +84,17 @@ const App = () => {
     }, 5000)
   }
 
+  const clearForm = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
       <Notification message={message} error={error} />
       <Filter filter={filter} callback={changeFilter} />
-      <PersonForm addPerson={addPerson} />
+      <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
       <PersonList persons={persons} filter={filter} deleteCallback={deletePerson} />
     </div>
   )
