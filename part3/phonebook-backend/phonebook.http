@@ -1,0 +1,50 @@
+@hostname=localhost
+@port=3001
+@host = {{hostname}}:{{port}}
+
+
+GET http://{{host}}/info
+
+###
+
+GET http://{{host}}/asdasdasd
+
+###
+
+GET http://{{host}}/api/persons
+
+###
+
+GET http://{{host}}/api/persons/2
+
+###
+
+DELETE http://{{host}}/api/persons/2
+
+###
+
+POST http://{{host}}/api/persons
+Content-Type: application/json
+
+{
+    "name": "Daniel Eriksson",
+    "number": "0703-123456789"
+}
+
+###
+
+POST http://{{host}}/api/persons
+Content-Type: application/json
+
+{
+    "name": "Daniel Eriksson"
+}
+
+###
+
+POST http://{{host}}/api/persons
+Content-Type: application/json
+
+{
+    "number": "0703-123456789"
+}
