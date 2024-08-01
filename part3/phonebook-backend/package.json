@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build:ui": "rm -rf dist && cd ../phonebook-frontend/ &&  npm install && npm run build && cp -r dist ../phonebook-backend",
+    "build:ui": "rm -rf dist && cd ../phonebook-frontend/ &&  npm install && npm run build && cp -r dist ../phonebook-backend && cd ../phonebook-backend/ ",
+    "build:ui:win": "del dist /f /q && cd ../phonebook-frontend/ &&  npm install && npm run build && xcopy .\\dist ..\\phonebook-backend\\dist /Y /E /H /C /I",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js"

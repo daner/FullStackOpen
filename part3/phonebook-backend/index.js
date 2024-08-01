@@ -52,11 +52,11 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    const person = persons.find(person => person.id === id)
+    const person = persons.find(person => person.id == id)
 
     if(person) {
         persons = persons.filter(item => item.id != person.id)
-        response.status(204).end()
+        response.json(person)
     } else{
         response.status(404).end()
     }
