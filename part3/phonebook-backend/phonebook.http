@@ -7,7 +7,7 @@ GET {{host}}/info
 
 ###
 
-GET {{host}}/asdasdasd
+GET {{host}}/unknown
 
 ###
 
@@ -15,11 +15,11 @@ GET {{host}}/api/persons
 
 ###
 
-GET {{host}}/api/persons/2
+GET {{host}}/api/persons/66ab6d281f6c69982459e5ef
 
 ###
 
-DELETE {{host}}/api/persons/2
+DELETE {{host}}/api/persons/66ab6d281f6c69982459e5ef
 
 ###
 
