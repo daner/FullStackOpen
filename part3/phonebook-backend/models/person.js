@@ -7,7 +7,7 @@ const url = process.env.MONGODB_CONNECTIONSTRING
 console.log('Connecting to MongoDB')
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('Connected to MongoDB')
   })
   .catch(error => {
@@ -15,28 +15,28 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required']
-    },
-    number: {
-        type: String,
-        validate: [ 
-          {
-            validator: (v) => {
-              return v && v.replace('-', '').length > 7
-            },
-            message: () => `Phone number must be of length 8`
-          },
-          {
-            validator: (v) => {
-              return /^\d{2,3}-\d+$/.test(v)
-            },
-            message: props => `${props.value} is not a valid phone number`
-          },
-        ],
-        required: [true, 'Phone number is required']
-    },
+  name: {
+    type: String,
+    required: [true, 'Name is required']
+  },
+  number: {
+    type: String,
+    validate: [ 
+      {
+        validator: (v) => {
+          return v && v.replace('-', '').length > 7
+        },
+        message: () => 'Phone number must be of length 8'
+      },
+      {
+        validator: (v) => {
+          return /^\d{2,3}-\d+$/.test(v)
+        },
+        message: props => `${props.value} is not a valid phone number`
+      },
+    ],
+    required: [true, 'Phone number is required']
+  },
 })
 
 personSchema.set('toJSON', {
