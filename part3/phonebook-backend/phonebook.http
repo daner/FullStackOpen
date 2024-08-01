@@ -1,29 +1,29 @@
-@hostname=localhost
+@hostname=http://localhost
 @port=3001
 @host = {{hostname}}:{{port}}
 
 
-GET http://{{host}}/info
+GET {{host}}/info
 
 ###
 
-GET http://{{host}}/asdasdasd
+GET {{host}}/asdasdasd
 
 ###
 
-GET http://{{host}}/api/persons
+GET {{host}}/api/persons
 
 ###
 
-GET http://{{host}}/api/persons/2
+GET {{host}}/api/persons/2
 
 ###
 
-DELETE http://{{host}}/api/persons/2
+DELETE {{host}}/api/persons/2
 
 ###
 
-POST http://{{host}}/api/persons
+POST {{host}}/api/persons
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 
-POST http://{{host}}/api/persons
+POST {{host}}/api/persons
 Content-Type: application/json
 
 {
@@ -42,7 +42,7 @@ Content-Type: application/json
 
 ###
 
-POST http://{{host}}/api/persons
+POST {{host}}/api/persons
 Content-Type: application/json
 
 {
