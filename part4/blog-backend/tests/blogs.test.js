@@ -95,6 +95,29 @@ describe("blogs", () => {
     assert.strictEqual(result.body.likes, 0)  
   })
 
+  test("missing title return bad request", async () => {
+    const newBlog = {
+      author: "Author",
+      url: "http://example.com",
+      likes: 5
+    }
+
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test("missing url return bad request", async () => {
+    const newBlog = {
+      title: "Title",
+      author: "Author",
+      likes: 5
+    }
+
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
 after(async () => {
