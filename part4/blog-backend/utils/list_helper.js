@@ -3,21 +3,38 @@ const dummy = (blogs) => {
 }
 
 const totalLikes = (blogs) => {
-
-    if(!blogs || !Array.isArray(blogs)) {
-        return 0
-    }
-
     return blogs.reduce((currentSum, blog) => { 
         return currentSum + blog.likes 
     } , 0)
 }
 
 const favoriteBlog = (blogs) => {
-    
+    if(blogs.length == 0) {
+        return null
+    }
+    else {
+        var topBlog = blogs[0]
+        blogs.forEach(blog => {
+            if(blog.likes > topBlog.likes) {
+                topBlog = blog
+            }
+        })
+        return { title: topBlog.title, author: topBlog.author, likes: topBlog.likes }
+    } 
+}
+
+const mostBlogs = (blogs) => {
+
+}
+
+const mostLikes = (blogs) => {
+
 }
 
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favoriteBlog,
+    mostBlogs,
+    mostLikes
 }

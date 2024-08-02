@@ -58,9 +58,12 @@ const withOneBlog = [
       likes: 5,
       __v: 0
     }
-  ]
+]
+
+const emptyList = []
 
 module.exports = {
+    emptyList,
     withMultipleBlogs,
     withOneBlog
 }
