@@ -1,9 +1,7 @@
 require('dotenv').config({ path: '.env.local' })
 
 const PORT = process.env.PORT
-const MONGODB_CONNECTIONSTRING = process.env.NODE_ENV === 'test' 
-  ? process.env.TEST_MONGODB_CONNECTIONSTRING
-  : process.env.MONGODB_CONNECTIONSTRING
+const MONGODB_CONNECTIONSTRING = process.env.MONGODB_CONNECTIONSTRING
 
 module.exports = {
   MONGODB_CONNECTIONSTRING,

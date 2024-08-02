@@ -1,4 +1,4 @@
-const { test, describe, after, beforeEach } = require('node:test')
+const { test, describe, after, beforeEach, before } = require('node:test')
 const _ = require('lodash')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
@@ -6,10 +6,19 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const blogs = require('./data/blogs')
-const api = supertest(app)
-
+const db = require('../db.js')
+const { MongoDBContainer } = require('@testcontainers/mongodb')
 
 describe("blogs", () => {
+  let api; 
+  let mongodbContainer;
+
+  before(async () => {
+    mongodbContainer = await new MongoDBContainer('mongo:6.0.1').start()
+    const url = `mongodb://${mongodbContainer.getHost()}:${mongodbContainer.getMappedPort(27017)}/test-db?directConnection=true` 
+    await db.connect(url)
+    api = supertest(app)
+  })
 
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -118,8 +127,11 @@ describe("blogs", () => {
       .send(newBlog)
       .expect(400)
   })
-})
+  
+  after(async () => {
+    console.log("after")
+    await mongoose.connection.close()
+    await mongodbContainer.stop()
+  })
 
-after(async () => {
-  await mongoose.connection.close()
 })
