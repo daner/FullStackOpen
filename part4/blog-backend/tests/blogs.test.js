@@ -14,7 +14,7 @@ describe("blogs", () => {
   let mongodbContainer;
 
   before(async () => {
-    mongodbContainer = await new MongoDBContainer('mongo:6.0.1').start()
+    mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
     const url = `mongodb://${mongodbContainer.getHost()}:${mongodbContainer.getMappedPort(27017)}/test-db?directConnection=true` 
     await db.connect(url)
     api = supertest(app)
@@ -29,7 +29,7 @@ describe("blogs", () => {
   })
 
   test('are returned as json', async () => {
-    const result = await api
+    await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
