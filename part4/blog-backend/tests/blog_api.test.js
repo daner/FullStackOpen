@@ -1,25 +1,17 @@
 const { test, describe, after, beforeEach, before } = require('node:test')
-const _ = require('lodash')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const app = require('../app')
 const blogs = require('./data/blogs')
 const helper = require('./test_helper')
 const bcrypt = require('bcrypt')
-const db = require('../db.js')
-const { MongoDBContainer } = require('@testcontainers/mongodb')
+const fixure = require('./api_fixture')
+const _ = require('lodash')
 
 let api; 
-let mongodbContainer;
 
 before(async () => {
-  mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
-  const url = `mongodb://${mongodbContainer.getHost()}:${mongodbContainer.getMappedPort(27017)}/test-db?directConnection=true` 
-  await db.connect(url)
-  api = supertest(app)
+  api = await fixure.before()
 })
 
 describe("blogs", () => {
@@ -235,6 +227,5 @@ describe('when there is initially one user in db', () => {
 })
 
 after(async () => {
-  await mongoose.connection.close()
-  await mongodbContainer.stop()
+  await fixure.after()
 })
