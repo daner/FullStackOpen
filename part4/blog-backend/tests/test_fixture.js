@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')
+const app = require('../app.js')
 const db = require('../db.js')
 const { MongoDBContainer } = require('@testcontainers/mongodb')
 
@@ -8,6 +8,7 @@ let api;
 let mongodbContainer
 
 const before = async () => {
+    //Would be nice to setup this once for all tests and not only once per test.js-file
     mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
     const url = `mongodb://${mongodbContainer.getHost()}:${mongodbContainer.getMappedPort(27017)}/test-db?directConnection=true` 
     await db.connect(url)
