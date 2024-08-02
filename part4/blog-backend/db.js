@@ -9,13 +9,13 @@ const connect = async (connectionString) => {
         : connectionString
 
     mongoose.set('strictQuery', false)
-    logger.info('connecting to', url)
+    logger.info('Connecting to', url)
 
     try {
         await mongoose.connect(url)
-        logger.info('connected to MongoDB')
+        logger.info('Connected to MongoDB')
     } catch(error) {
-        logger.error('error connecting ', error)
+        logger.error('Error connecting ', error)
     }
 
 }

@@ -8,8 +8,24 @@ POST {{host}}/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Title 5",
-    "author": "Author 2",
+    "title": "Test title",
+    "author": "Test author",
     "url": "http://www.example.com",
-    "likes": 10
+    "likes": 42
+}
+
+###
+
+GET {{host}}/api/blogs/66acc78061e4f3470616ede1
+
+###
+
+DELETE {{host}}/api/blogs/
+
+####
+PUT {{host}}/api/blogs/66acc78061e4f3470616ede1
+Content-Type: application/json
+
+{
+    "likes": 42
 }
