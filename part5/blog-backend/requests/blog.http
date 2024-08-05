@@ -1,0 +1,33 @@
+@host=http://localhost:3001
+
+GET {{host}}/api/blogs
+
+###
+
+POST {{host}}/api/blogs
+Content-Type: application/json
+Authorization: Bearer ***
+
+{
+    "title": "Test title",
+    "author": "Test author",
+    "url": "http://www.example.com",
+    "likes": 42
+}
+
+###
+
+GET {{host}}/api/blogs/66b0734cd1caa1b02a85c3d7
+
+###
+
+DELETE {{host}}/api/blogs/66b07a2262e05dfd0f3ae3c0
+Authorization: Bearer ***
+
+####
+PUT {{host}}/api/blogs/66acc78061e4f3470616ede1
+Content-Type: application/json
+
+{
+    "likes": 42
+}
