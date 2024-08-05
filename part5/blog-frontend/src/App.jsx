@@ -54,7 +54,7 @@ const App = () => {
     setBlogs([...blogs, addedBlog])
   }
   
-  const handleDeleteBlog = async (blog) => {
+  const handleDeleteBlog = async (deletedBlog) => {
     setNotification(`${deletedBlog.title} by ${deletedBlog.author} removed from blogs`)
     setBlogs([...blogs.filter(blog => blog.id !== deletedBlog.id)])
   }

@@ -25,7 +25,6 @@ const Blog = ({ user, blog, updateHandler, deleteHandler, handleError}) => {
     }
   }
 
-
   if(!showDetails) {
     return(
       <div className="blog">
@@ -48,9 +47,12 @@ const Blog = ({ user, blog, updateHandler, deleteHandler, handleError}) => {
         <div>
           {blog.user.name}
         </div>
-        <div>
-          <button onClick={deleteBlog}>remove</button>
-        </div>
+        { user.username === blog.user.username ?
+          <div>
+            <button onClick={deleteBlog}>remove</button>
+          </div>
+          : <></>
+        }
       </div>
     )
   }
