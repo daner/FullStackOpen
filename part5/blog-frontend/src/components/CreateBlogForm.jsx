@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const CreateBlogForm = ({user, createBlog, handleError}) => {
+const CreateBlogForm = ({user, createHandler, errorHandler}) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
@@ -13,9 +13,9 @@ const CreateBlogForm = ({user, createBlog, handleError}) => {
             setTitle('')
             setAuthor('')
             setUrl('')
-            createBlog(createdBlog)
+            createHandler(createdBlog)
         } catch(error) {
-            handleError(error.response.data.error)                
+            errorHandler(error.response.data.error)                
         }
     }
 

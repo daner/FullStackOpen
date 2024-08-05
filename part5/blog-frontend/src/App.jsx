@@ -14,7 +14,7 @@ const App = () => {
 
   const createBlogRef = useRef()
 
-  const loginCallback = (user) => {
+  const handleLogin = (user) => {
     setUser(user)
   }
 
@@ -23,8 +23,8 @@ const App = () => {
   }
 
   const fetchBlogs = async () => {
-    const blogs = await blogService.getAll()
-    setBlogs(blogs) 
+    const fetchedBlogs = await blogService.getAll()
+    setBlogs(fetchedBlogs) 
   }
 
   const setNotification = (message) => {
@@ -54,15 +54,13 @@ const App = () => {
     setBlogs([...blogs, addedBlog])
   }
   
-  const deleteHandler = async (blog) => {
-    try  {
-      const deletedBlog = await blogService.remove(blog, user.token)
-      setNotification(`${deletedBlog.title} by ${deletedBlog.author} removed from blogs`)
-      setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
-    } catch (error) {
-      console.log(error)
-      handleError(error.response.data.error)
-    }
+  const handleDeleteBlog = async (blog) => {
+    setNotification(`${deletedBlog.title} by ${deletedBlog.author} removed from blogs`)
+    setBlogs([...blogs.filter(blog => blog.id !== deletedBlog.id)])
+  }
+
+  const handleUpdateBlog = (updatedBlog) => {
+    setBlogs([...blogs.filter(blog => blog.id !== updatedBlog.id), updatedBlog])
   }
 
   useEffect(() => {
@@ -74,7 +72,7 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         <Notification message={message} error={error} />
-        <LoginForm successCallback={loginCallback} errorCallback={handleError} />
+        <LoginForm loginHandler={handleLogin} errorHandler={handleError} />
       </div>
     )
   }
@@ -85,11 +83,13 @@ const App = () => {
       <Notification message={message} error={error} />
       <div className="user">{user.name} logged in <button onClick={logout}>logout</button></div>
       <Togglable buttonLabel="new blog" ref={createBlogRef}>
-        <CreateBlogForm user={user} createBlog={handleAddedBlog} handleError={handleError} />
+        <CreateBlogForm user={user} createHandler={handleAddedBlog} errorHandler={handleError} />
       </Togglable>
       <br />
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} deleteHandler={deleteHandler} />
+      {blogs
+        .sort((a, b) => a.likes > b.likes ? -1 : 1)
+        .map(blog =>
+          <Blog key={blog.id} user={user} blog={blog} deleteHandler={handleDeleteBlog} updateHandler={handleUpdateBlog} errorHandler={handleError} />
       )}
     </div>
   )

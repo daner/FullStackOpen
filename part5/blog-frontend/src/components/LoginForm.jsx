@@ -1,7 +1,7 @@
 import { useState } from "react"
 import loginService from "../services/login"
 
-const LoginForm = ({successCallback, errorCallback}) => {
+const LoginForm = ({loginHandler, errorHandler}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -11,9 +11,9 @@ const LoginForm = ({successCallback, errorCallback}) => {
             const response = await loginService.login({username, password})
             setUsername('')
             setPassword('')
-            successCallback(response)
+            loginHandler(response)
         } catch(error) {
-            errorCallback("Wrong username or password")               
+            errorHandler("Wrong username or password")               
         }
     }
 
