@@ -1,4 +1,5 @@
 @host=http://localhost:3001
+@token=Bearer ****
 
 GET {{host}}/api/blogs
 
@@ -6,7 +7,7 @@ GET {{host}}/api/blogs
 
 POST {{host}}/api/blogs
 Content-Type: application/json
-Authorization: Bearer ***
+Authorization: {{token}}
 
 {
     "title": "Test title",
@@ -17,17 +18,17 @@ Authorization: Bearer ***
 
 ###
 
-GET {{host}}/api/blogs/66b0734cd1caa1b02a85c3d7
+GET {{host}}/api/blogs/66b0bc7dac75b5f044d0f8dd
 
 ###
 
-DELETE {{host}}/api/blogs/66b07a2262e05dfd0f3ae3c0
-Authorization: Bearer ***
+DELETE {{host}}/api/blogs/66b0da0d47d82abaf0924746
+Authorization: {{token}}
 
 ####
-PUT {{host}}/api/blogs/66acc78061e4f3470616ede1
+PUT {{host}}/api/blogs/66b0da0d47d82abaf0924746
 Content-Type: application/json
 
 {
-    "likes": 42
+    "likes": 32
 }
