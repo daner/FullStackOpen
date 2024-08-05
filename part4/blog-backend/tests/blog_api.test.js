@@ -1,11 +1,13 @@
 const { test, describe, after, beforeEach, before } = require('node:test')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const blogs = require('./data/blogs')
 const fixure = require('./test_fixture')
 const _ = require('lodash')
 
 let api; 
+let token;
 
 before(async () => {
   api = await fixure.before()
@@ -14,8 +16,17 @@ before(async () => {
 describe("blogs", () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const user = { username: 'user', password: 'password' }
+    const userResponse = await api.post('/api/users').send(user)
+    const loginResponse = await api.post('/api/login').send(user)
+
+    token = `Bearer ${loginResponse.body.token}`   
+
     for(const item of blogs.withMultipleBlogs) {
       const blog = new Blog(item)
+      blog.user = userResponse.body.id
       await blog.save()
     }
   })
@@ -63,6 +74,7 @@ describe("blogs", () => {
     }
 
     const addedBlog = await api.post('/api/blogs')
+      .set({ Authorization: token })
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -89,6 +101,7 @@ describe("blogs", () => {
     }
 
     const result = await api.post('/api/blogs')
+      .set({ Authorization: token })
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -104,6 +117,7 @@ describe("blogs", () => {
     }
 
     await api.post('/api/blogs')
+      .set({ Authorization: token })
       .send(newBlog)
       .expect(400)
   })
@@ -116,6 +130,7 @@ describe("blogs", () => {
     }
 
     await api.post('/api/blogs')
+      .set({ Authorization: token })
       .send(newBlog)
       .expect(400)
   })
@@ -126,10 +141,12 @@ describe("blogs", () => {
       .get('/api/blogs')
       .expect(200)
 
-    const beforeCount = beforeResult.body.length
-    const id = beforeResult.body[0].id
 
+    const beforeCount = beforeResult.body.length
+    const id = beforeResult.body[0].id  
+    
     await api.delete(`/api/blogs/${id}`)
+      .set({ Authorization: token })
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -151,6 +168,7 @@ describe("blogs", () => {
     }
 
     const addedBlog = await api.post('/api/blogs')
+      .set({ Authorization: token })
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -186,6 +204,18 @@ describe("blogs", () => {
 
       assert.strictEqual(putResult.body.likes, beforeBlog.likes + 1)  
       assert.strictEqual(getResult.body.likes, beforeBlog.likes + 1)  
+  })
+
+  test("missing authroization on create returns unauthorized", async () => {
+    const newBlog = {
+      author: "Author",
+      url: "http://example.com",
+      likes: 5
+    }
+
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
   })
 })
 
