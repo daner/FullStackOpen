@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const Notification = ({ message, error }) => {
     let classnames = 'notification '
 
@@ -14,5 +16,11 @@ const Notification = ({ message, error }) => {
         )
     }
 }
+
+Notification.propTypes = {
+    message: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired
+}
+
 
 export default Notification

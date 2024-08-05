@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog, updateHandler, deleteHandler, handleError }) => {
+const Blog = ({ user, blog, updateHandler, deleteHandler, errorHandler }) => {
     const [showDetails, setShowDetails] = useState(false)
 
     const likeBlog = async () => {
@@ -9,7 +10,7 @@ const Blog = ({ user, blog, updateHandler, deleteHandler, handleError }) => {
             const updatedBlog = await blogService.update({ id: blog.id, likes: blog.likes + 1 }, user.token)
             updateHandler(updatedBlog)
         } catch (error) {
-            handleError(error.response.data.error)
+            errorHandler(error.response.data.error)
         }
     }
 
@@ -19,7 +20,7 @@ const Blog = ({ user, blog, updateHandler, deleteHandler, handleError }) => {
                 const deletedBlog = await blogService.remove(blog, user.token)
                 deleteHandler(deletedBlog)
             } catch (error) {
-                handleError(error.response.data.error)
+                errorHandler(error.response.data.error)
             }
         }
     }
@@ -55,6 +56,15 @@ const Blog = ({ user, blog, updateHandler, deleteHandler, handleError }) => {
             </div>
         )
     }
+}
+
+
+Blog.propTypes = {
+    user: PropTypes.any.isRequired,
+    blog: PropTypes.any.isRequired,
+    updateHandler: PropTypes.func.isRequired,
+    deleteHandler: PropTypes.func.isRequired,
+    errorHandler: PropTypes.func.isRequired
 }
 
 export default Blog

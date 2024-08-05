@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const CreateBlogForm = ({ user, createHandler, errorHandler }) => {
     const [title, setTitle] = useState('')
@@ -30,6 +31,12 @@ const CreateBlogForm = ({ user, createHandler, errorHandler }) => {
             </form>
         </div>
     )
+}
+
+CreateBlogForm.propTypes = {
+    user: PropTypes.any.isRequired,
+    createHandler: PropTypes.func.isRequired,
+    errorHandler: PropTypes.func.isRequired
 }
 
 export default CreateBlogForm
