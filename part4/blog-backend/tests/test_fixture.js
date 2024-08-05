@@ -8,7 +8,7 @@ let mongodbContainer
 
 const before = async () => {
     mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
-    const url = `mongodb://${mongodbContainer.getHost()}:${mongodbContainer.getMappedPort(27017)}/test-db?directConnection=true`    
+    const url = `${mongodbContainer.getConnectionString()}/test-db?directConnection=true`    
     await db.connect(url)
     const api = supertest(app)
     return api;

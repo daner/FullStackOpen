@@ -26,9 +26,9 @@ describe('when there is initially one user at db', () => {
       const usersAtStart = await helper.usersInDb()
   
       const newUser = {
-        username: 'mluukkai',
-        name: 'Matti Luukkainen',
-        password: 'salainen',
+        username: 'Daniel',
+        name: 'Daniel Eriksson',
+        password: 'supersecret',
       }
   
       await api
@@ -43,28 +43,78 @@ describe('when there is initially one user at db', () => {
       const usernames = usersAtEnd.map(u => u.username)
       assert(usernames.includes(newUser.username))
     })
-  
-    // test('creation fails with proper statuscode and message if username already taken', async () => {
-    //   const usersAtStart = await helper.usersInDb()
-  
-    //   const newUser = {
-    //     username: 'root',
-    //     name: 'Superuser',
-    //     password: 'salainen',
-    //   }
-  
-    //   const result = await api
-    //     .post('/api/users')
-    //     .send(newUser)
-    //     .expect(400)
-    //     .expect('Content-Type', /application\/json/)
-  
-    //   const usersAtEnd = await helper.usersInDb()
-  
-    //   assert(result.body.error.includes('expected `username` to be unique'))
-  
-    //   assert.strictEqual(usersAtEnd.length, usersAtStart.length)
-    // })
+
+    test('creation fails without password', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'Daniel',
+            name: 'Daniel Eriksson',
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test('creation fails with to short password', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'Daniel',
+            name: 'Daniel Eriksson',
+            password: "sh"
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test('creation fails with to short username', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'Da',
+            name: 'Daniel Eriksson',
+            password: "secret"
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)        
+    })
+    
+    
+    test('creation fails with duplicate username', async() => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'root',
+            name: 'Root',
+            password: "secret"
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)        
+    })
 })
 
 
