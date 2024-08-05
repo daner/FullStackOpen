@@ -13,7 +13,7 @@ const LoginForm = ({successCallback, errorCallback}) => {
             setPassword('')
             successCallback(response)
         } catch(error) {
-            errorCallback(error.message)               
+            errorCallback("Wrong username or password")               
         }
     }
 

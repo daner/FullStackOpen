@@ -1,15 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Notification from './components/Notification'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [error, setError] = useState(false)
+
+  const createBlogRef = useRef()
 
   const loginCallback = (user) => {
     setUser(user)
@@ -29,19 +32,25 @@ const App = () => {
     setError(false)
     setTimeout(() => {
      setMessage(null)
-    }, 3000)
+    }, 6000)
   }
 
   const handleError = (error) => {
+
+    if(!error) {
+      error = "something went wrong"
+    }
+
      setMessage(error)
      setError(true)
      setTimeout(() => {
       setMessage(null)
-     }, 3000)
+     }, 6000)
   }
 
   const handleAddedBlog = (addedBlog) => {
     setNotification(`${addedBlog.title} by ${addedBlog.author} added to blogs`)
+    createBlogRef.current.toggleVisibility()
     setBlogs([...blogs, addedBlog])
   }
   
@@ -52,10 +61,9 @@ const App = () => {
       setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
     } catch (error) {
       console.log(error)
-      handleError(error.message)
+      handleError(error.response.data.error)
     }
   }
-
 
   useEffect(() => {
     fetchBlogs()
@@ -76,7 +84,9 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={message} error={error} />
       <div className="user">{user.name} logged in <button onClick={logout}>logout</button></div>
-      <CreateBlogForm user={user} successCallback={handleAddedBlog} errorCallback={handleError} />
+      <Togglable buttonLabel="new blog" ref={createBlogRef}>
+        <CreateBlogForm user={user} createBlog={handleAddedBlog} handleError={handleError} />
+      </Togglable>
       <br />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} deleteHandler={deleteHandler} />

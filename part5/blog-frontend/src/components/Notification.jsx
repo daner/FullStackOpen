@@ -1,8 +1,6 @@
 const Notification = ({message, error}) => {
     let classnames = 'notification '
 
-    console.log({message, error})
-
     if(error) {
         classnames += ' error'
     }
