@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
-
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
-  const callback = (user) => {
+  const loginCallback = (user) => {
     setUser(user)
   }
 
@@ -16,15 +16,19 @@ const App = () => {
     setUser(null)
   }
 
+  const fetchBlogs = async () => {
+    const blogs = await blogService.getAll()
+    setBlogs(blogs) 
+  }
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    fetchBlogs()
   }, [])
 
   if(user === null) {
-    return(<div>
-      <LoginForm successCallback={callback} />
+    return(
+    <div>
+      <LoginForm successCallback={loginCallback} />
     </div>)
   }
 
@@ -32,6 +36,8 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <div className="user">{user.name} logged in <button onClick={logout}>logout</button></div>
+      <CreateBlogForm />
+      <br />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

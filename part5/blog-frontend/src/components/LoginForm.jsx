@@ -1,7 +1,7 @@
 import { useState } from "react"
 import loginService from "../services/login"
 
-const LoginForm = ({successCallback}) => {
+const LoginForm = ({successCallback, failedCallback}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState(null)
