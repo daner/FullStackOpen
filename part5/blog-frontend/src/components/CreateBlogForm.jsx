@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const CreateBlogForm = (user, successCallback, failedCallback) => {
+const CreateBlogForm = (user, successCallback, errorCallback) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
@@ -12,7 +12,7 @@ const CreateBlogForm = (user, successCallback, failedCallback) => {
             const createdBlog = await blogService.create({title, author, url}, user.token)
             successCallback(createdBlog)
         } catch(error) {
-            failedCallback(error)                
+            errorCallback(error.message)                
         }
     }
 

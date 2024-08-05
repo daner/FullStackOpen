@@ -7,6 +7,7 @@ import blogService from './services/blogs'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const loginCallback = (user) => {
     setUser(user)
@@ -21,22 +22,35 @@ const App = () => {
     setBlogs(blogs) 
   }
 
+  const handleError = (error) => {
+     setMessage(error)
+     setTimeout(() => {
+      setMessage(null)
+     }, 3000)
+  }
+
+  const handleAddedBlog = () => {}
+
   useEffect(() => {
     fetchBlogs()
   }, [])
 
   if(user === null) {
     return(
-    <div>
-      <LoginForm successCallback={loginCallback} />
-    </div>)
+      <div>
+        <h2>log in to application</h2>
+        <Notification message={message} />
+        <LoginForm successCallback={loginCallback} errorCallback={handleError} />
+      </div>
+    )
   }
 
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} />
       <div className="user">{user.name} logged in <button onClick={logout}>logout</button></div>
-      <CreateBlogForm />
+      <CreateBlogForm successCallback={handleAddedBlog} errorCallback={handleError} />
       <br />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
