@@ -6,7 +6,7 @@ GET {{host}}/api/blogs
 
 POST {{host}}/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbmllbCIsImlkIjoiNjZiMDZlZDg4ZjdmYmQ3ODE4NDBjODNlIiwiaWF0IjoxNzIyODQwODI2fQ.E4bTW-JYhJU-SS9LVEZJXgVquWWH5car3iAIl0HVDi0
+Authorization: Bearer ***
 
 {
     "title": "Test title",
@@ -22,7 +22,7 @@ GET {{host}}/api/blogs/66b0734cd1caa1b02a85c3d7
 ###
 
 DELETE {{host}}/api/blogs/66b07a2262e05dfd0f3ae3c0
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbmllbDIiLCJpZCI6IjY2YjA3YzU0NzZmZWNiZDhmZTY5MjY2YyIsImlhdCI6MTcyMjg0MjIwM30.giWHkBS3xsdOUukkLP-fg9Cl0ro7vHKSrmp3dPjQcBU
+Authorization: Bearer ***
 
 ####
 PUT {{host}}/api/blogs/66acc78061e4f3470616ede1
