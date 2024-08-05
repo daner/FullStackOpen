@@ -1,15 +1,15 @@
-const Notification = ({message, error}) => {
+const Notification = ({ message, error }) => {
     let classnames = 'notification '
 
-    if(error) {
+    if (error) {
         classnames += ' error'
     }
     else {
         classnames += ' positive'
     }
-    
-    if(message !== null) {
-        return(
+
+    if (message !== null) {
+        return (
             <div className={classnames}>{message}</div>
         )
     }
