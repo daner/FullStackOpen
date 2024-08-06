@@ -1,7 +1,8 @@
 const config = require('./utils/config')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-
+const { MongoDBContainer } = require('@testcontainers/mongodb')
+    
 const connect = async (connectionString) => {
 
     const url = connectionString === undefined
@@ -20,4 +21,10 @@ const connect = async (connectionString) => {
 
 }
 
-module.exports = { connect }
+const setupTestContainerAndConnect = async () => {
+    const mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
+    const url = `${mongodbContainer.getConnectionString()}/test-db?directConnection=true`
+    connect(url)
+}
+
+module.exports = { connect, setupTestContainerAndConnect }
