@@ -41,11 +41,7 @@ test('show url and likes after clicking button', async () => {
 
 test("updatehandler called after like button is clicked", async () => {
 
-    let likes = 0;
-
-    const updateHandler = () => {
-        likes += 1
-    }
+    const updateHandler = vi.fn()
 
     render(<Blog blog={blog} user={user} updateHandler={updateHandler} errorHandler={() => {}} deleteHandler={() => {}} />)
 
@@ -59,5 +55,5 @@ test("updatehandler called after like button is clicked", async () => {
     await userEvents.click(likeButton)
     await userEvents.click(likeButton)
 
-    expect(likes).toBe(2)
+    expect(updateHandler.mock.calls).toHaveLength(2)
 })
