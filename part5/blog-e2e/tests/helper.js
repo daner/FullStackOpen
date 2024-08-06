@@ -1,7 +1,13 @@
+const { expect } = require('@playwright/test')
+
 const loginWith = async (page, username, password) => {
     await page.getByTestId('username-input').fill(username)
     await page.getByTestId('password-input').fill(password)
     await page.getByRole('button', { name: 'login' }).click()
+}
+
+const logout = async (page) => {
+    await page.getByRole('button', { name: 'logout' }).click()
 }
 
 const createBlog = async (page, author, title, url) => {
@@ -10,6 +16,7 @@ const createBlog = async (page, author, title, url) => {
     await page.getByTestId('title-input').fill(title)
     await page.getByTestId('url-input').fill(url)
     await page.getByRole('button', { name: 'create' }).click()
+    await expect(page.getByTestId('notification')).toContainText(`${title} by ${author} added to blogs`)
 }
 
 const createUser = async (request, baseUrl, username, name, password) => {
@@ -27,4 +34,4 @@ const resetDatabase = async (request, baseUrl) => {
 }
 
 
-export { loginWith, createBlog, createUser, resetDatabase }
+export { loginWith, createBlog, createUser, resetDatabase, logout }
