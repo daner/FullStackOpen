@@ -4,7 +4,7 @@ const logger = require('./utils/logger')
 const db = require('./db')
 
 if (process.env.NODE_ENV === 'test') {
-    db.setupTestContainerAndConnect()
+    db.startTestContainerAndConnect()
 }
 else {
     db.connect()

@@ -12,7 +12,7 @@ const Notification = ({ message, error }) => {
 
     if (message !== null) {
         return (
-            <div className={classnames}>{message}</div>
+            <div className={classnames} data-testid='notification'>{message}</div>
         )
     }
 }

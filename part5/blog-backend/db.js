@@ -21,10 +21,11 @@ const connect = async (connectionString) => {
 
 }
 
-const setupTestContainerAndConnect = async () => {
+const startTestContainerAndConnect = async () => {
     const mongodbContainer = await new MongoDBContainer('mongo:7.0.12').start()
     const url = `${mongodbContainer.getConnectionString()}/test-db?directConnection=true`
     connect(url)
+    return mongodbContainer;
 }
 
-module.exports = { connect, setupTestContainerAndConnect }
+module.exports = { connect, startTestContainerAndConnect }
