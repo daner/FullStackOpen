@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
+import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
-const CreateBlogForm = ({ user, createHandler, errorHandler }) => {
+const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
     const submit = async (event) => {
         event.preventDefault()
-        try {
-            const createdBlog = await blogService.create({ title, author, url }, user.token)
-            setTitle('')
-            setAuthor('')
-            setUrl('')
-            createHandler(createdBlog)
-        } catch (error) {
-            errorHandler(error.response.data.error)
-        }
+        createHandler({ title, author, url })
     }
+
+    const clearForm = () => {
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+    }
+
+    useImperativeHandle(refs, () => {
+        return {
+            clearForm
+        }
+    })
 
     return (
         <div>
@@ -31,12 +34,10 @@ const CreateBlogForm = ({ user, createHandler, errorHandler }) => {
             </form>
         </div>
     )
-}
+})
 
 CreateBlogForm.propTypes = {
-    user: PropTypes.any.isRequired,
     createHandler: PropTypes.func.isRequired,
-    errorHandler: PropTypes.func.isRequired
 }
 
 export default CreateBlogForm

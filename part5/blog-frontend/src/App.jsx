@@ -12,7 +12,8 @@ const App = () => {
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(false)
 
-    const createBlogRef = useRef()
+    const createBlogToggleRef = useRef()
+    const createBlogFormRef = useRef()
 
     const handleLogin = (user) => {
         setUser(user)
@@ -48,19 +49,38 @@ const App = () => {
         }, 6000)
     }
 
-    const handleAddedBlog = (addedBlog) => {
-        setNotification(`${addedBlog.title} by ${addedBlog.author} added to blogs`)
-        createBlogRef.current.toggleVisibility()
-        setBlogs([...blogs, addedBlog])
+    const handleAddedBlog = async (blogToAdd) => {
+        try {
+            const createdBlog = await blogService.create(blogToAdd, user.token)
+            setNotification(`${createdBlog.title} by ${createdBlog.author} added to blogs`)
+            createBlogFormRef.current.clearForm()
+            createBlogToggleRef.current.toggleVisibility()
+            setBlogs([...blogs, createdBlog])
+
+        } catch (error) {
+            handleError(error.response.data.error)
+        }        
     }
 
-    const handleDeleteBlog = async (deletedBlog) => {
-        setNotification(`${deletedBlog.title} by ${deletedBlog.author} removed from blogs`)
-        setBlogs([...blogs.filter(blog => blog.id !== deletedBlog.id)])
+    const handleDeleteBlog = async (blogToDelete) => {
+        if (window.confirm('do you want to delete blog?')) {
+            try {
+                const deletedBlog = await blogService.remove(blogToDelete, user.token)
+                setNotification(`${deletedBlog.title} by ${deletedBlog.author} removed from blogs`)
+                setBlogs([...blogs.filter(blog => blog.id !== deletedBlog.id)])
+            } catch (error) {
+                handleError(error.response.data.error)
+            }
+        }
     }
 
-    const handleUpdateBlog = (updatedBlog) => {
-        setBlogs([...blogs.filter(blog => blog.id !== updatedBlog.id), updatedBlog])
+    const handleUpdateBlog = async (blogToUpdate) => {
+        try {
+            const updatedBlog = await blogService.update(blogToUpdate, user.token)
+            setBlogs([...blogs.filter(blog => blog.id !== updatedBlog.id), updatedBlog])
+        } catch (error) {
+            handleError(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -82,14 +102,14 @@ const App = () => {
             <h2>blogs</h2>
             <Notification message={message} error={error} />
             <div className='user'>{user.name} logged in <button onClick={logout}>logout</button></div>
-            <Togglable buttonLabel='new blog' ref={createBlogRef}>
-                <CreateBlogForm user={user} createHandler={handleAddedBlog} errorHandler={handleError} />
+            <Togglable buttonLabel='new blog' ref={createBlogToggleRef}>
+                <CreateBlogForm createHandler={handleAddedBlog} ref={createBlogFormRef}  />
             </Togglable>
             <br />
             {blogs
                 .sort((a, b) => a.likes > b.likes ? -1 : 1)
                 .map(blog =>
-                    <Blog key={blog.id} user={user} blog={blog} deleteHandler={handleDeleteBlog} updateHandler={handleUpdateBlog} errorHandler={handleError} />
+                    <Blog key={blog.id} user={user} blog={blog} deleteHandler={handleDeleteBlog} updateHandler={handleUpdateBlog} />
                 )}
         </div>
     )
