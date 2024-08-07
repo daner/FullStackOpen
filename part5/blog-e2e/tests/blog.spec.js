@@ -26,7 +26,7 @@ describe('Blog app', () => {
         })
 
         test('fails with wrong credentials', async ({ page }) => {
-            await loginWith(page, 'daniel', 'wrongsecret')
+            await loginWith(page, 'user1', 'wrongsecret')
             await expect(page.getByTestId('notification')).toContainText('Wrong username or password')
         })
     })
