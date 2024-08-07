@@ -8,7 +8,7 @@ let mongodbContainer
 const before = async () => {
     mongodbContainer = await db.startTestContainerAndConnect()
     const api = supertest(app)
-    return api;
+    return api
 }
 
 const after = async () => {

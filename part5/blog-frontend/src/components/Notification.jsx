@@ -18,7 +18,8 @@ const Notification = ({ message, error }) => {
 }
 
 Notification.propTypes = {
-    error: PropTypes.bool.isRequired
+    error: PropTypes.bool.isRequired,
+    message: PropTypes.String
 }
 
 

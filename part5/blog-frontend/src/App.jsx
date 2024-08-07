@@ -59,7 +59,7 @@ const App = () => {
 
         } catch (error) {
             handleError(error.response.data.error)
-        }        
+        }
     }
 
     const handleDeleteBlog = async (blogToDelete) => {
@@ -103,7 +103,7 @@ const App = () => {
             <Notification message={message} error={error} />
             <div className='user'>{user.name} logged in <button onClick={logout}>logout</button></div>
             <Togglable buttonLabel='new blog' ref={createBlogToggleRef}>
-                <CreateBlogForm createHandler={handleAddedBlog} ref={createBlogFormRef}  />
+                <CreateBlogForm createHandler={handleAddedBlog} ref={createBlogFormRef} />
             </Togglable>
             <br />
             {blogs

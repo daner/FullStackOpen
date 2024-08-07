@@ -29,9 +29,23 @@ const createUser = async (request, baseUrl, username, name, password) => {
     })
 }
 
+const setLikes = async (request, baseUrl, title, likes) => {
+    const blogsResponse = await request.get(baseUrl + '/api/blogs')
+    const blogs = await blogsResponse.json()
+    blogs.forEach(async blog => {
+        if (blog.title === title) {
+            await request.put(baseUrl + `/api/blogs/${blog.id}`, {
+                data: {
+                    likes: likes
+                }
+            })
+        }
+    });
+}
+
 const resetDatabase = async (request, baseUrl) => {
     await request.post(baseUrl + '/api/testing/reset')
 }
 
 
-export { loginWith, createBlog, createUser, resetDatabase, logout }
+export { loginWith, createBlog, createUser, resetDatabase, logout, setLikes }
