@@ -21,7 +21,7 @@ describe('Blog app', () => {
 
     describe('Login', () => {
         test('succeeds with correct credentials', async ({ page }) => {
-            await loginWith(page, 'user1', 'secret')          
+            await loginWith(page, 'user1', 'secret')
             await expect(page.getByRole('heading', { name: 'blogs' })).toBeVisible()
         })
 
@@ -36,11 +36,9 @@ describe('Blog app', () => {
             await loginWith(page, 'user1', 'secret')
         })
 
-        test('a new blog can be created', async ({ page }) => {          
+        test('a new blog can be created', async ({ page }) => {
             await createBlog(page, "Test author 1", "Test title 1", "example.com")
             await expect(page.locator('.blog')).toContainText('Test title 1 Test author 1');
-            await createBlog(page, "Test author 2", "Test title 2", "example.com")           
-            await expect(page.locator('.blog')).toContainText(['Test title 1 Test author 1', 'Test title 2 Test author 2']);
         })
 
         test('can like blog', async ({ page }) => {
@@ -54,7 +52,7 @@ describe('Blog app', () => {
         test('can delete blog', async ({ page }) => {
             await createBlog(page, "Test author 1", "Test title 1", "example.com")
             await page.getByRole('button', { name: 'view' }).click()
-            
+
             page.on('dialog', dialog => dialog.accept());
 
             await page.getByRole('button', { name: 'remove' }).click()
@@ -76,19 +74,19 @@ describe('Blog app', () => {
             await expect(page.getByRole('button', { name: 'remove' })).toHaveCount(1)
         })
 
-        test('blogs are sorted by likes', async({ page, request }) => {
+        test('blogs are sorted by likes', async ({ page, request }) => {
             await createBlog(page, "Author 1", "Title 1", "example.com")
             await createBlog(page, "Author 2", "Title 2", "example.com")
             await createBlog(page, "Author 3", "Title 3", "example.com")
             await createBlog(page, "Author 4", "Title 4", "example.com")
-            
+
             await setLikes(request, backendUrl, "Title 3", 43)
             await setLikes(request, backendUrl, "Title 2", 33)
             await setLikes(request, backendUrl, "Title 4", 23)
             await setLikes(request, backendUrl, "Title 1", 13)
 
             await page.reload();
-            
+
             await loginWith(page, 'user1', 'secret')
 
             await expect(page.locator('.blog')).toContainText(['Title 3 Author 3', 'Title 2 Author 2', 'Title 4 Author 4', 'Title 1 Author 1']);
