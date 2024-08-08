@@ -3,9 +3,9 @@ import { useField } from '../hooks'
 
 const CreateNew = (props) => {
 
-    const { reset: resetContent, ...content } = useField('text')
-    const { reset: resetAuthor, ...author }  = useField('text')
-    const { reset: resetInfo, ...info }  = useField('text')
+    const [content, resetContent] = useField('text')
+    const [author, resetAuthor] = useField('text')
+    const [info, resetInfo] = useField('text')
 
     const navigate = useNavigate()
 
