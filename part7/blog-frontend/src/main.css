@@ -1,0 +1,32 @@
+.user {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.notification {
+    font-size: 1.2rem;
+    background: lightgray;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 3px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.notification.positive {
+    color: green;
+    border-color: green;
+}
+
+.notification.error {
+    color: red;
+    border-color: red;
+}
+
+.blog {
+    padding-top: 10px;
+    padding-left: 2px;
+    border: solid;
+    border-width: 1px;
+    margin-bottom: 5px;
+}
