@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
             validator: (v) => {
                 return v.length > 3
             },
-            message: () => 'Username must be atleast 3 characters.'
+            message: () => 'Username must be atleast 3 characters.',
         },
     },
     name: String,
@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     blogs: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Blog'
-        }
+            ref: 'Blog',
+        },
     ],
 })
 
@@ -28,7 +28,7 @@ userSchema.set('toJSON', {
         delete returnedObject.__v
         // the passwordHash should not be revealed
         delete returnedObject.passwordHash
-    }
+    },
 })
 
 const User = mongoose.model('User', userSchema)

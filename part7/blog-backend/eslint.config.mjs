@@ -1,45 +1,32 @@
-import globals from "globals";
+import globals from 'globals'
 import js from '@eslint/js'
 import stylisticJs from '@stylistic/eslint-plugin-js'
 
 export default [
-  js.configs.recommended,
-  {
-    files: ["**/*.js"],
-    languageOptions: {
-      sourceType: "commonjs",
-      globals: {
-        ...globals.node,
-      },
-      ecmaVersion: "latest",
+    js.configs.recommended,
+    {
+        files: ['**/*.js'],
+        languageOptions: {
+            sourceType: 'commonjs',
+            globals: {
+                ...globals.node,
+            },
+            ecmaVersion: 'latest',
+        },
+        plugins: {
+            '@stylistic/js': stylisticJs,
+        },
+        rules: {
+            '@stylistic/js/indent': ['error', 4],
+            '@stylistic/js/quotes': ['error', 'single'],
+            '@stylistic/js/semi': ['error', 'never'],
+            eqeqeq: 'error',
+            'object-curly-spacing': ['error', 'always'],
+            'arrow-spacing': ['error', { before: true, after: true }],
+            'no-console': 'off',
+        },
     },
-    plugins: {
-      '@stylistic/js': stylisticJs
+    {
+        ignores: ['dist/**', 'build/**'],
     },
-    rules: {
-      '@stylistic/js/indent': [
-        'error',
-        4
-      ],
-      '@stylistic/js/quotes': [
-        'error',
-        'single'
-      ],
-      '@stylistic/js/semi': [
-        'error',
-        'never'
-      ],
-      'eqeqeq': 'error',
-      'object-curly-spacing': [
-        'error', 'always'
-      ],
-      'arrow-spacing': [
-        'error', { 'before': true, 'after': true },
-      ],
-      'no-console': 'off',
-    },
-  },
-  { 
-    ignores: ["dist/**", "build/**"],
-  },
-];
+]

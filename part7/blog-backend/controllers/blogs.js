@@ -2,13 +2,19 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({}).populate('user', { name: 1, username: 1 })
+    const blogs = await Blog.find({}).populate('user', {
+        name: 1,
+        username: 1,
+    })
     response.json(blogs)
 })
 
 blogsRouter.get('/:id', async (request, response) => {
     const id = request.params.id
-    const blog = await Blog.findById(id).populate('user', { name: 1, username: 1 })
+    const blog = await Blog.findById(id).populate('user', {
+        name: 1,
+        username: 1,
+    })
     if (blog) {
         response.json(blog)
     } else {
@@ -50,7 +56,9 @@ blogsRouter.delete('/:id', async (request, response) => {
     }
 
     if (blogToDelete.user.toString() !== user.id.toString()) {
-        return response.status(401).json({ error: 'can\'t remove blog from another user' })
+        return response
+            .status(401)
+            .json({ error: "can't remove blog from another user" })
     }
 
     await Blog.deleteOne({ _id: blogToDelete._id })
@@ -62,9 +70,11 @@ blogsRouter.put('/:id', async (request, response) => {
     const { likes } = request.body
     const id = request.params.id
 
-    const blog = await Blog
-        .findByIdAndUpdate(id, { likes: likes }, { new: true, runValidators: true, context: 'query' })
-        .populate('user', { name: 1, username: 1 })
+    const blog = await Blog.findByIdAndUpdate(
+        id,
+        { likes: likes },
+        { new: true, runValidators: true, context: 'query' },
+    ).populate('user', { name: 1, username: 1 })
 
     if (blog) {
         response.json(blog)

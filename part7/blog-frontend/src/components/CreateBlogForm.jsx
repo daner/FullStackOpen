@@ -19,7 +19,7 @@ const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
 
     useImperativeHandle(refs, () => {
         return {
-            clearForm
+            clearForm,
         }
     })
 
@@ -29,15 +29,27 @@ const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
             <form onSubmit={submit}>
                 <div>
                     <span>title</span>
-                    <input value={title} onChange={(event) => setTitle(event.target.value)} data-testid="title-input" />
+                    <input
+                        value={title}
+                        onChange={(event) => setTitle(event.target.value)}
+                        data-testid="title-input"
+                    />
                 </div>
                 <div>
                     <span>author</span>
-                    <input value={author} onChange={(event) => setAuthor(event.target.value)} data-testid="author-input" />
+                    <input
+                        value={author}
+                        onChange={(event) => setAuthor(event.target.value)}
+                        data-testid="author-input"
+                    />
                 </div>
                 <div>
                     <span>url</span>
-                    <input value={url} onChange={(event) => setUrl(event.target.value)} data-testid="url-input" />
+                    <input
+                        value={url}
+                        onChange={(event) => setUrl(event.target.value)}
+                        data-testid="url-input"
+                    />
                 </div>
                 <div>
                     <button>create</button>

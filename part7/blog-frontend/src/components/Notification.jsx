@@ -5,22 +5,22 @@ const Notification = ({ message, error }) => {
 
     if (error) {
         classnames += ' error'
-    }
-    else {
+    } else {
         classnames += ' positive'
     }
 
     if (message !== null) {
         return (
-            <div className={classnames} data-testid='notification'>{message}</div>
+            <div className={classnames} data-testid="notification">
+                {message}
+            </div>
         )
     }
 }
 
 Notification.propTypes = {
     error: PropTypes.bool.isRequired,
-    message: PropTypes.String
+    message: PropTypes.String,
 }
-
 
 export default Notification

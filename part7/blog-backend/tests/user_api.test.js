@@ -11,7 +11,6 @@ before(async () => {
     api = await fixure.before()
 })
 
-
 describe('when there is initially one user at db', () => {
     beforeEach(async () => {
         await User.deleteMany({})
@@ -40,7 +39,7 @@ describe('when there is initially one user at db', () => {
         const usersAtEnd = await helper.usersInDb()
         assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
 
-        const usernames = usersAtEnd.map(u => u.username)
+        const usernames = usersAtEnd.map((u) => u.username)
         assert(usernames.includes(newUser.username))
     })
 
@@ -52,10 +51,7 @@ describe('when there is initially one user at db', () => {
             name: 'Daniel Eriksson',
         }
 
-        await api
-            .post('/api/users')
-            .send(newUser)
-            .expect(400)
+        await api.post('/api/users').send(newUser).expect(400)
 
         const usersAtEnd = await helper.usersInDb()
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
@@ -67,13 +63,10 @@ describe('when there is initially one user at db', () => {
         const newUser = {
             username: 'Daniel',
             name: 'Daniel Eriksson',
-            password: 'sh'
+            password: 'sh',
         }
 
-        await api
-            .post('/api/users')
-            .send(newUser)
-            .expect(400)
+        await api.post('/api/users').send(newUser).expect(400)
 
         const usersAtEnd = await helper.usersInDb()
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
@@ -85,18 +78,14 @@ describe('when there is initially one user at db', () => {
         const newUser = {
             username: 'Da',
             name: 'Daniel Eriksson',
-            password: 'secret'
+            password: 'secret',
         }
 
-        await api
-            .post('/api/users')
-            .send(newUser)
-            .expect(400)
+        await api.post('/api/users').send(newUser).expect(400)
 
         const usersAtEnd = await helper.usersInDb()
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
-
 
     test('creation fails with duplicate username', async () => {
         const usersAtStart = await helper.usersInDb()
@@ -104,19 +93,15 @@ describe('when there is initially one user at db', () => {
         const newUser = {
             username: 'root',
             name: 'Root',
-            password: 'secret'
+            password: 'secret',
         }
 
-        await api
-            .post('/api/users')
-            .send(newUser)
-            .expect(400)
+        await api.post('/api/users').send(newUser).expect(400)
 
         const usersAtEnd = await helper.usersInDb()
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
 })
-
 
 after(async () => {
     await User.deleteMany({})

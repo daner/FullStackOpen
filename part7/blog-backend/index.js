@@ -5,8 +5,7 @@ const db = require('./db')
 
 if (process.env.NODE_ENV === 'test') {
     db.startTestContainerAndConnect()
-}
-else {
+} else {
     db.connect()
 }
 

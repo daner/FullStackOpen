@@ -13,8 +13,12 @@ const totalLikes = (blogs) => {
 const favoriteBlog = (blogs) => {
     let topBlog = null
 
-    _.forEach(blogs, blog => {
-        const candidate = { title: blog.title, author: blog.author, likes: blog.likes }
+    _.forEach(blogs, (blog) => {
+        const candidate = {
+            title: blog.title,
+            author: blog.author,
+            likes: blog.likes,
+        }
         if (topBlog === null || blog.likes > topBlog.likes) {
             topBlog = candidate
         }
@@ -42,7 +46,10 @@ const mostLikes = (blogs) => {
     let topAuthor = null
 
     _.forEach(authors, (value, key) => {
-        const author = { author: key, likes: _.reduce(value, (sum, blog) => sum + blog.likes, 0) }
+        const author = {
+            author: key,
+            likes: _.reduce(value, (sum, blog) => sum + blog.likes, 0),
+        }
         if (topAuthor === null || author.likes > topAuthor.likes) {
             topAuthor = author
         }
@@ -56,5 +63,5 @@ module.exports = {
     totalLikes,
     favoriteBlog,
     mostBlogs,
-    mostLikes
+    mostLikes,
 }

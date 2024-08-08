@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 const { MongoDBContainer } = require('@testcontainers/mongodb')
 
 const connect = async (connectionString) => {
-
-    const url = connectionString === undefined
-        ? config.MONGODB_CONNECTIONSTRING
-        : connectionString
+    const url =
+        connectionString === undefined
+            ? config.MONGODB_CONNECTIONSTRING
+            : connectionString
 
     mongoose.set('strictQuery', false)
     logger.info('Connecting to', url)
@@ -18,7 +18,6 @@ const connect = async (connectionString) => {
     } catch (error) {
         logger.error('Error connecting ', error)
     }
-
 }
 
 const startTestContainerAndConnect = async () => {

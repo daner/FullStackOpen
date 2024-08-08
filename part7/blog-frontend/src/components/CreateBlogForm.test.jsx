@@ -4,13 +4,12 @@ import { expect, test, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 
 test('calls add blog handler with correct information', async () => {
-
     const createBlog = vi.fn()
 
     const testBlog = {
         author: 'Test Author',
         title: 'Test Title',
-        url: 'example.com'
+        url: 'example.com',
     }
 
     render(<CreateBlogForm createHandler={createBlog} />)

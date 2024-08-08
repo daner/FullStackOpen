@@ -7,9 +7,14 @@ morgan.token('body', function (req) {
     return JSON.stringify(req.body)
 })
 
-const requestLogger = process.env.NODE_ENV === 'test'
-    ? (request, response, next) => { next() }
-    : morgan(':method :url :status :res[content-length] - :response-time ms :body')
+const requestLogger =
+    process.env.NODE_ENV === 'test'
+        ? (request, response, next) => {
+              next()
+          }
+        : morgan(
+              ':method :url :status :res[content-length] - :response-time ms :body',
+          )
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -26,7 +31,7 @@ const errorHandler = (error, request, response, next) => {
         return response.status(401).json({ error: 'token invalid' })
     } else if (error.name === 'TokenExpiredError') {
         return response.status(401).json({
-            error: 'token expired'
+            error: 'token expired',
         })
     }
 
@@ -54,11 +59,10 @@ const userExtractor = async (request, response, next) => {
     next()
 }
 
-
 module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
     tokenExtractor,
-    userExtractor
+    userExtractor,
 }

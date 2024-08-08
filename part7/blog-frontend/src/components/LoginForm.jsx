@@ -21,9 +21,25 @@ const LoginForm = ({ loginHandler, errorHandler }) => {
     return (
         <div>
             <form onSubmit={submitForm}>
-                <div><span>username</span> <input value={username} onChange={(event) => setUsername(event.target.value)} data-testid='username-input' /></div>
-                <div><span>password</span> <input value={password} onChange={(event) => setPassword(event.target.value)} data-testid='password-input' /></div>
-                <div><button>login</button></div>
+                <div>
+                    <span>username</span>{' '}
+                    <input
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        data-testid="username-input"
+                    />
+                </div>
+                <div>
+                    <span>password</span>{' '}
+                    <input
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        data-testid="password-input"
+                    />
+                </div>
+                <div>
+                    <button>login</button>
+                </div>
             </form>
         </div>
     )
@@ -31,7 +47,7 @@ const LoginForm = ({ loginHandler, errorHandler }) => {
 
 LoginForm.propTypes = {
     loginHandler: PropTypes.func.isRequired,
-    errorHandler: PropTypes.func.isRequired
+    errorHandler: PropTypes.func.isRequired,
 }
 
 export default LoginForm
