@@ -66,26 +66,26 @@ const Blog = ({ blog }) => {
 
     if (!showDetails) {
         return (
-            <div className="blog">
+            <div className="border-2 px-4 py-2 mt-2">
                 {blog.title} {blog.author}{' '}
-                <button onClick={() => setShowDetails(true)}>view</button>
+                <button className="btn btn-blue" onClick={() => setShowDetails(true)}>view</button>
             </div>
         )
     } else {
         return (
-            <div className="blog">
+            <div className="border-2 px-4 py-2 mt-2">
                 <div>
                     {blog.title} {blog.author}{' '}
-                    <button onClick={() => setShowDetails(false)}>hide</button>
+                    <button className='btn btn-blue' onClick={() => setShowDetails(false)}>hide</button>
                 </div>
                 <div>{blog.url}</div>
                 <div>
-                    likes {blog.likes} <button onClick={likeBlog}>like</button>
+                    likes {blog.likes} <button className='btn btn-blue' onClick={likeBlog}>like</button>
                 </div>
                 <div>{blog.user.name}</div>
                 {currentUser.username === blog.user.username ? (
                     <div>
-                        <button onClick={deleteBlog}>remove</button>
+                        <button className='btn btn-blue' onClick={deleteBlog}>remove</button>
                     </div>
                 ) : (
                     <></>
