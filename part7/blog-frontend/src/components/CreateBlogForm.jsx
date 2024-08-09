@@ -1,3 +1,4 @@
+import { showNotification } from '../reducers/notificationReducer'
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 

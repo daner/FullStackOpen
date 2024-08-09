@@ -1,16 +1,65 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useDispatch } from 'react-redux'
+import { showNotification } from '../reducers/notificationReducer'
 import { useState } from 'react'
+import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog, updateHandler, deleteHandler }) => {
+const Blog = ({ blog }) => {
     const [showDetails, setShowDetails] = useState(false)
 
+    const queryClient = useQueryClient()
+    const dispatch = useDispatch()
+
+    const updateBlogMutation = useMutation({
+        mutationFn: blogService.update,
+        onSuccess: (updatedBlog) => {
+            const blogs = queryClient.getQueryData(['blogs'])
+            queryClient.setQueryData(
+                ['blogs'],
+                blogs.map((item) =>
+                    item.id !== updatedBlog.id ? item : updatedBlog,
+                ),
+            )
+            dispatch(
+                showNotification(
+                    `Blog ${updatedBlog.title} was liked`,
+                    false,
+                    5,
+                ),
+            )
+        },
+    })
+
+    const deleteBlogMutation = useMutation({
+        mutationFn: blogService.deleteBlog,
+        onSuccess: (deletedBlog) => {
+            const blogs = queryClient.getQueryData(['blogs'])
+            queryClient.setQueryData(
+                ['blogs'],
+                [...blogs.filter((blog) => blog.id !== deletedBlog.id)],
+            )
+            dispatch(
+                showNotification(
+                    `Blog ${updatedBlog.title} was deleted`,
+                    false,
+                    5,
+                ),
+            )
+        },
+    })
+
     const likeBlog = async () => {
-        updateHandler({ id: blog.id, likes: blog.likes + 1 })
+        updateBlogMutation.mutate({ id: blog.id, likes: blog.likes + 1 })
     }
 
     const deleteBlog = async () => {
-        deleteHandler(blog)
+        if (window.confirm('Sure?')) {
+            deleteBlogMutation.mutate({ id: blog.id })
+        }
     }
+
+    const user = { name: '', username: '' }
 
     if (!showDetails) {
         return (
@@ -44,10 +93,7 @@ const Blog = ({ user, blog, updateHandler, deleteHandler }) => {
 }
 
 Blog.propTypes = {
-    user: PropTypes.any.isRequired,
     blog: PropTypes.any.isRequired,
-    updateHandler: PropTypes.func.isRequired,
-    deleteHandler: PropTypes.func.isRequired,
 }
 
 export default Blog
