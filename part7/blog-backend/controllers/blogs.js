@@ -3,11 +3,10 @@ const Blog = require('../models/blog')
 const Comment = require('../models/comment')
 
 blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({})
-        .populate('user', {
-            name: 1,
-            username: 1,
-        })
+    const blogs = await Blog.find({}).populate('user', {
+        name: 1,
+        username: 1,
+    })
     response.json(blogs)
 })
 
@@ -95,7 +94,9 @@ blogsRouter.put('/:id', async (request, response) => {
         id,
         { likes: likes },
         { new: true, runValidators: true, context: 'query' },
-    ).populate('user', { name: 1, username: 1 })
+    )
+        .populate('user', { name: 1, username: 1 })
+        .populate('comments', { text: 1 })
 
     if (blog) {
         response.json(blog)
