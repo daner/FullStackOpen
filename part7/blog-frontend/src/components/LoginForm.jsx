@@ -27,7 +27,7 @@ const LoginForm = () => {
         <div>
             <form onSubmit={submitForm}>
                 <div>
-                    <span>username</span>{' '}
+                    <span className='label min-w-20'>username</span>{' '}
                     <input
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
@@ -35,7 +35,7 @@ const LoginForm = () => {
                     />
                 </div>
                 <div>
-                    <span>password</span>{' '}
+                    <span className='label min-w-20'>password</span>{' '}
                     <input
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
@@ -43,7 +43,7 @@ const LoginForm = () => {
                     />
                 </div>
                 <div>
-                    <button>login</button>
+                    <button className="btn btn-blue">login</button>
                 </div>
             </form>
         </div>

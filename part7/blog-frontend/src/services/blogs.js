@@ -6,6 +6,11 @@ const getAll = async () => {
     return response.data
 }
 
+const getById = async (id) => {
+    const response = await axios.get(`${baseUrl}/${id}`)
+    return response.data
+}
+
 const create = async ({ blog, token }) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -27,4 +32,4 @@ const remove = async ({ blog, token }) => {
     return response.data
 }
 
-export default { getAll, create, remove, update }
+export default { getAll, create, remove, update, getById }

@@ -1,33 +1,25 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
-import { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import blogService from '../services/blogs'
-import PropTypes from 'prop-types'
 
-const Blog = ({ blog }) => {
-    const [showDetails, setShowDetails] = useState(false)
-
-    const currentUser = useSelector((state) => state.user)
-
+const Blog = () => {
+    const id = useParams().id
+    const navigate = useNavigate()
     const queryClient = useQueryClient()
     const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.user)
 
     const updateBlogMutation = useMutation({
         mutationFn: blogService.update,
         onSuccess: (updatedBlog) => {
-            const blogs = queryClient.getQueryData(['blogs'])
-            queryClient.setQueryData(
-                ['blogs'],
-                blogs.map((item) =>
-                    item.id !== updatedBlog.id ? item : updatedBlog,
-                ),
-            )
+            queryClient.setQueryData(['blogs', id], updatedBlog)
             dispatch(
                 showNotification(
                     `Blog ${updatedBlog.title} was liked`,
                     false,
-                    5,
+                    20,
                 ),
             )
         },
@@ -36,11 +28,6 @@ const Blog = ({ blog }) => {
     const deleteBlogMutation = useMutation({
         mutationFn: blogService.remove,
         onSuccess: (deletedBlog) => {
-            const blogs = queryClient.getQueryData(['blogs'])
-            queryClient.setQueryData(
-                ['blogs'],
-                [...blogs.filter((blog) => blog.id !== deletedBlog.id)],
-            )
             dispatch(
                 showNotification(
                     `Blog ${deletedBlog.title} was deleted`,
@@ -48,8 +35,25 @@ const Blog = ({ blog }) => {
                     5,
                 ),
             )
+            navigate('/')
         },
     })
+
+    const result = useQuery({
+        queryKey: ['blogs', id],
+        queryFn: () => blogService.getById(id),
+        refetchOnWindowFocus: false,
+    })
+
+    if (result.isLoading) {
+        return <div className="mt-8">Loading blog...</div>
+    }
+
+    if (result.isError) {
+        return <div className="mt-8">Failed to fetch blog data</div>
+    }
+
+    const blog = result.data
 
     const likeBlog = async () => {
         updateBlogMutation.mutate({ id: blog.id, likes: blog.likes + 1 })
@@ -64,39 +68,30 @@ const Blog = ({ blog }) => {
         }
     }
 
-    if (!showDetails) {
-        return (
-            <div className="border-2 px-4 py-2 mt-2">
-                {blog.title} {blog.author}{' '}
-                <button className="btn btn-blue" onClick={() => setShowDetails(true)}>view</button>
+    return (
+        <div className="mt-8">
+            <div className="text-2xl mb-2">
+                {blog.title} by {blog.author}
             </div>
-        )
-    } else {
-        return (
-            <div className="border-2 px-4 py-2 mt-2">
-                <div>
-                    {blog.title} {blog.author}{' '}
-                    <button className='btn btn-blue' onClick={() => setShowDetails(false)}>hide</button>
-                </div>
-                <div>{blog.url}</div>
-                <div>
-                    likes {blog.likes} <button className='btn btn-blue' onClick={likeBlog}>like</button>
-                </div>
-                <div>{blog.user.name}</div>
-                {currentUser.username === blog.user.username ? (
-                    <div>
-                        <button className='btn btn-blue' onClick={deleteBlog}>remove</button>
-                    </div>
-                ) : (
-                    <></>
-                )}
+            <div className="mb-2">{blog.url}</div>
+            <div className="mb-2">
+                likes {blog.likes}{' '}
+                <button className="btn btn-blue" onClick={likeBlog}>
+                    like
+                </button>
             </div>
-        )
-    }
-}
-
-Blog.propTypes = {
-    blog: PropTypes.any.isRequired,
+            <div>{blog.user.name}</div>
+            {currentUser.username === blog.user.username ? (
+                <div>
+                    <button className="btn btn-blue" onClick={deleteBlog}>
+                        remove
+                    </button>
+                </div>
+            ) : (
+                <></>
+            )}
+        </div>
+    )
 }
 
 export default Blog

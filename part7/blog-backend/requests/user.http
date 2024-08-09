@@ -4,6 +4,10 @@ GET {{host}}/api/users
 
 ###
 
+GET {{host}}/api/users/66b06ed88f7fbd781840c83e
+
+###
+
 POST {{host}}/api/users
 Content-Type: application/json
 

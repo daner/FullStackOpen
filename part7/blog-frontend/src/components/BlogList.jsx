@@ -1,9 +1,9 @@
-import Blog from './Blog'
 import blogService from '../services/blogs'
 import CreateBlogForm from './CreateBlogForm'
 import Togglable from './Togglable'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const BlogList = () => {
     const createBlogToggleRef = useRef()
@@ -38,7 +38,9 @@ const BlogList = () => {
             {blogs
                 .sort((a, b) => (a.likes > b.likes ? -1 : 1))
                 .map((blog) => (
-                    <Blog key={blog.id} blog={blog} />
+                    <div key={blog.id} className="border-2 px-4 py-2 mt-2">
+                        <Link to={`/blogs/${blog.id}`}><span>{blog.title}</span></Link> by <span>{blog.author}</span>
+                    </div>
                 ))}
         </div>
     )
