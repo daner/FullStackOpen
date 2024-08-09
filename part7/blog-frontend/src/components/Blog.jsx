@@ -90,6 +90,14 @@ const Blog = () => {
             ) : (
                 <></>
             )}
+            <div>
+                <div className="text-lg mt-12">comments</div>
+                <ul className='list-disc list-inside'>
+                    {blog.comments.map(comment => (
+                        <li key={comment.id}>{comment.text}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

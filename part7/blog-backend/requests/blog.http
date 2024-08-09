@@ -32,3 +32,12 @@ Content-Type: application/json
 {
     "likes": 32
 }
+
+###
+
+POST {{host}}/api/blogs/66b0bc7dac75b5f044d0f8dd/comments
+Content-Type: application/json
+
+{
+    "text": "Coooool blog!"
+}
