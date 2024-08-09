@@ -5,12 +5,14 @@ import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
 import Togglable from './components/Togglable'
+import { showNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState(null)
-    const [message, setMessage] = useState(null)
-    const [error, setError] = useState(false)
+
+    const dispatch = useDispatch()
 
     const createBlogToggleRef = useRef()
     const createBlogFormRef = useRef()
@@ -28,31 +30,22 @@ const App = () => {
         setBlogs(fetchedBlogs)
     }
 
-    const setNotification = (message) => {
-        setMessage(message)
-        setError(false)
-        setTimeout(() => {
-            setMessage(null)
-        }, 6000)
-    }
-
     const handleError = (error) => {
         if (!error) {
             error = 'something went wrong'
         }
-
-        setMessage(error)
-        setError(true)
-        setTimeout(() => {
-            setMessage(null)
-        }, 6000)
+        dispatch(showNotification(error, true, 5))
     }
 
     const handleAddedBlog = async (blogToAdd) => {
         try {
             const createdBlog = await blogService.create(blogToAdd, user.token)
-            setNotification(
-                `${createdBlog.title} by ${createdBlog.author} added to blogs`,
+            dispatch(
+                showNotification(
+                    `${createdBlog.title} by ${createdBlog.author} added to blogs`,
+                    false,
+                    5,
+                ),
             )
             createBlogFormRef.current.clearForm()
             createBlogToggleRef.current.toggleVisibility()
@@ -69,8 +62,12 @@ const App = () => {
                     blogToDelete,
                     user.token,
                 )
-                setNotification(
-                    `${deletedBlog.title} by ${deletedBlog.author} removed from blogs`,
+                dispatch(
+                    showNotification(
+                        `${deletedBlog.title} by ${deletedBlog.author} removed from blogs`,
+                        false,
+                        5,
+                    ),
                 )
                 setBlogs([
                     ...blogs.filter((blog) => blog.id !== deletedBlog.id),
@@ -104,7 +101,7 @@ const App = () => {
         return (
             <div>
                 <h2>log in to application</h2>
-                <Notification message={message} error={error} />
+                <Notification />
                 <LoginForm
                     loginHandler={handleLogin}
                     errorHandler={handleError}
@@ -116,7 +113,7 @@ const App = () => {
     return (
         <div>
             <h2>blogs</h2>
-            <Notification message={message} error={error} />
+            <Notification />
             <div className="user">
                 {user.name} logged in <button onClick={logout}>logout</button>
             </div>
