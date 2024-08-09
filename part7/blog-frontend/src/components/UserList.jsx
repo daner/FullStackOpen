@@ -21,7 +21,7 @@ const UserList = () => {
 
     return (
         <div>
-            <h2 className="text-xl mt-8">Users</h2>
+            <h2 className="text-2xl mb-4">users</h2>
             <table className="table-auto divide-y divide-gray-300">
                 <thead>
                     <tr>

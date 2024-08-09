@@ -30,6 +30,7 @@ const BlogList = () => {
 
     return (
         <div>
+            <h2 className="text-2xl mb-4">blogs</h2>
             <div className="mt-4 mb-4">
                 <Togglable buttonLabel="new blog" ref={createBlogToggleRef}>
                     <CreateBlogForm createHandler={handleAddedBlog} />
@@ -39,7 +40,10 @@ const BlogList = () => {
                 .sort((a, b) => (a.likes > b.likes ? -1 : 1))
                 .map((blog) => (
                     <div key={blog.id} className="border-2 px-4 py-2 mt-2">
-                        <Link to={`/blogs/${blog.id}`}><span>{blog.title}</span></Link> by <span>{blog.author}</span>
+                        <Link to={`/blogs/${blog.id}`}>
+                            <span>{blog.title}</span>
+                        </Link>{' '}
+                        by <span>{blog.author}</span>
                     </div>
                 ))}
         </div>

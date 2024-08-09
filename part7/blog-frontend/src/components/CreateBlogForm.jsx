@@ -45,7 +45,7 @@ const CreateBlogForm = ({ createHandler }) => {
             <h2 className='font-bold'>create new</h2>
             <form onSubmit={submit}>
                 <div>
-                    <span className="label">title</span>
+                    <span className="label min-w-12">title</span>
                     <input
                         value={title}
                         onChange={(event) => setTitle(event.target.value)}
@@ -53,7 +53,7 @@ const CreateBlogForm = ({ createHandler }) => {
                     />
                 </div>
                 <div>
-                    <span className="label">author</span>
+                    <span className="label min-w-12">author</span>
                     <input
                         value={author}
                         onChange={(event) => setAuthor(event.target.value)}
@@ -61,7 +61,7 @@ const CreateBlogForm = ({ createHandler }) => {
                     />
                 </div>
                 <div>
-                    <span className="label">url</span>
+                    <span className="label min-w-12">url</span>
                     <input
                         value={url}
                         onChange={(event) => setUrl(event.target.value)}

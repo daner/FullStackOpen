@@ -19,7 +19,7 @@ const Blog = () => {
                 showNotification(
                     `Blog ${updatedBlog.title} was liked`,
                     false,
-                    20,
+                    5,
                 ),
             )
         },
@@ -80,7 +80,7 @@ const Blog = () => {
                     like
                 </button>
             </div>
-            <div>{blog.user.name}</div>
+            <div>added by {blog.user.name}</div>
             {currentUser.username === blog.user.username ? (
                 <div>
                     <button className="btn btn-blue" onClick={deleteBlog}>
