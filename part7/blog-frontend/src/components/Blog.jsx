@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showNotification } from '../reducers/notificationReducer'
 import { useState } from 'react'
 import blogService from '../services/blogs'
@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 
 const Blog = ({ blog }) => {
     const [showDetails, setShowDetails] = useState(false)
+
+    const currentUser = useSelector((state) => state.user)
 
     const queryClient = useQueryClient()
     const dispatch = useDispatch()
@@ -32,7 +34,7 @@ const Blog = ({ blog }) => {
     })
 
     const deleteBlogMutation = useMutation({
-        mutationFn: blogService.deleteBlog,
+        mutationFn: blogService.remove,
         onSuccess: (deletedBlog) => {
             const blogs = queryClient.getQueryData(['blogs'])
             queryClient.setQueryData(
@@ -41,7 +43,7 @@ const Blog = ({ blog }) => {
             )
             dispatch(
                 showNotification(
-                    `Blog ${updatedBlog.title} was deleted`,
+                    `Blog ${deletedBlog.title} was deleted`,
                     false,
                     5,
                 ),
@@ -55,11 +57,12 @@ const Blog = ({ blog }) => {
 
     const deleteBlog = async () => {
         if (window.confirm('Sure?')) {
-            deleteBlogMutation.mutate({ id: blog.id })
+            deleteBlogMutation.mutate({
+                blog: { id: blog.id },
+                token: currentUser.token,
+            })
         }
     }
-
-    const user = { name: '', username: '' }
 
     if (!showDetails) {
         return (
@@ -80,7 +83,7 @@ const Blog = ({ blog }) => {
                     likes {blog.likes} <button onClick={likeBlog}>like</button>
                 </div>
                 <div>{blog.user.name}</div>
-                {user.username === blog.user.username ? (
+                {currentUser.username === blog.user.username ? (
                     <div>
                         <button onClick={deleteBlog}>remove</button>
                     </div>

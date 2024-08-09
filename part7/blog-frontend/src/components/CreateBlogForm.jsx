@@ -1,15 +1,37 @@
 import { showNotification } from '../reducers/notificationReducer'
-import { useState, forwardRef, useImperativeHandle } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import blogsService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
+const CreateBlogForm = ({ createHandler }) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
+    const queryClient = useQueryClient()
+    const dispatch = useDispatch()
+
+    const currentUser = useSelector((state) => state.user)
+
+    const addBlogMutation = useMutation({
+        mutationFn: blogsService.create,
+        onSuccess: (newBlog) => {
+            const blogs = queryClient.getQueryData(['blogs'])
+            queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+            dispatch(showNotification(`Added ${newBlog.title}`, false, 5))
+            createHandler()
+            clearForm()
+        },
+    })
+
     const submit = async (event) => {
         event.preventDefault()
-        createHandler({ title, author, url })
+        addBlogMutation.mutate({
+            blog: { title, author, url },
+            token: currentUser.token,
+        })
     }
 
     const clearForm = () => {
@@ -17,12 +39,6 @@ const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
         setAuthor('')
         setUrl('')
     }
-
-    useImperativeHandle(refs, () => {
-        return {
-            clearForm,
-        }
-    })
 
     return (
         <div>
@@ -58,7 +74,7 @@ const CreateBlogForm = forwardRef(({ createHandler }, refs) => {
             </form>
         </div>
     )
-})
+}
 
 CreateBlogForm.displayName = 'CreateBlogForm'
 CreateBlogForm.propTypes = {
