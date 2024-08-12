@@ -1,0 +1,28 @@
+@host=http://localhost:3001
+
+GET {{host}}/api/users
+
+###
+
+GET {{host}}/api/users/66b06ed88f7fbd781840c83e
+
+###
+
+POST {{host}}/api/users
+Content-Type: application/json
+
+{
+    "username": "daniel",
+    "name": "Daniel Eriksson",
+    "password": "secret"
+}
+
+###
+
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+    "username": "daniel",
+    "password": "secret"
+}

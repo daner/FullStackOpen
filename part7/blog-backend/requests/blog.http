@@ -1,0 +1,43 @@
+@host=http://localhost:3001
+@token=Bearer ****
+
+GET {{host}}/api/blogs
+
+###
+
+POST {{host}}/api/blogs
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+    "title": "Test title",
+    "author": "Test author",
+    "url": "http://www.example.com",
+    "likes": 42
+}
+
+###
+
+GET {{host}}/api/blogs/66b0bc7dac75b5f044d0f8dd
+
+###
+
+DELETE {{host}}/api/blogs/66b0da0d47d82abaf0924746
+Authorization: {{token}}
+
+####
+PUT {{host}}/api/blogs/66b0da0d47d82abaf0924746
+Content-Type: application/json
+
+{
+    "likes": 32
+}
+
+###
+
+POST {{host}}/api/blogs/66b0bc7dac75b5f044d0f8dd/comments
+Content-Type: application/json
+
+{
+    "text": "Coooool blog!"
+}
