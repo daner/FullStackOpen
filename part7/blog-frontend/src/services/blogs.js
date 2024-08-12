@@ -32,8 +32,11 @@ const remove = async ({ blog, token }) => {
     return response.data
 }
 
-const createComment = async (id, comment) => {
-    const response = await axios.post(baseUrl + `/${id}/comments`, comment)
+const createComment = async (id, comment, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` },
+    }    
+    const response = await axios.post(baseUrl + `/${id}/comments`, comment, config)
     return response.data
 }
 

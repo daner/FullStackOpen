@@ -28,7 +28,7 @@ const Menu = () => {
                 </div>
                 <div className='flex text-sm'>
                     {user.name}
-                    <button className="ml-4 bg-gray-200 rounded px-2 py-0.5 hover:bg-gray-400" onClick={logout}>
+                    <button className="ml-1.5 rounded-md bg-white px-1.5 py-0.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onClick={logout}>
                         logout
                     </button>
                 </div>

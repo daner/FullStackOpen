@@ -13,7 +13,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.get('/:id', async (request, response) => {
     const id = request.params.id
     const blog = await Blog.findById(id)
-        .populate('comments', { text: 1 })
+        .populate('comments', { text: 1, user: 1, date: 1 })
         .populate('user', {
             name: 1,
             username: 1,
@@ -31,6 +31,13 @@ blogsRouter.post('/:id/comments', async (request, response) => {
     if (blog) {
         const comment = new Comment(request.body)
         comment.blog = blog.id
+        if(request.user) {
+            comment.user = request.user.name
+        }
+        else {
+            comment.user = 'Anonymous'
+        }
+        comment.date = new Date()
         await comment.save()
 
         blog.comments = blog.comments.concat(comment._id)

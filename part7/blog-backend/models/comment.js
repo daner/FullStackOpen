@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
+    user: String,
+    date: Date,
     text: {
         type: String,
         required: [true, 'Text is required'],
